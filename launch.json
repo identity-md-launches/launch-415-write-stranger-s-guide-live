@@ -1,0 +1,22 @@
+{
+  "kind": "evm_project",
+  "token": {
+    "contract": "TimeLockToken",
+    "name": "Time Lock",
+    "symbol": "LOCK",
+    "decimals": 18
+  },
+  "contracts": [
+    {
+      "contract": "TimeLockBank",
+      "constructorArgs": ["$token", "31536000"]
+    }
+  ],
+  "pool": {
+    "pairedCurrency": "0x0000000000000000000000000000000000000000",
+    "fee": 3000,
+    "tickSpacing": 60,
+    "initialPrice": "79228162514264337593543950336"
+  },
+  "notes": "Time Lock (LOCK, displayed as $LOCK) test launch on Sepolia (chainId 11155111) as an evm_project with one application contract. Token: src/TimeLockToken.sol:TimeLockToken, a fixed-supply OpenZeppelin v5.0.2 ERC-20 with no constructor arguments, name 'Time Lock', symbol 'LOCK', 18 decimals; its constructor mints exactly 1,000,000,000 tokens (10^27 minor units) to msg.sender, which is ProjectFactory at launch. It has no owner, mint, burn-by-admin, pause, upgrade, tax or blacklist path. Application: src/TimeLockBank.sol:TimeLockBank, constructor (address token_, uint256 maxLockSeconds_) with arguments $token (this launch's TimeLockToken, filling the address-typed slot) and 31536000 (365 days in seconds, the maximum lock duration measured from each deposit or extension). The bank is adminless: no owner, no $owner argument, no privileged beneficiary, no pause, fee, rescue or early exit. It rejects a zero or code-free token address and a zero cap, is nonpayable, does not touch the factory's supply, and needs no initialization call. Dependency order is token then bank; $token is the only reference. Pool: native ETH (zero address), fee 3000, tickSpacing 60, no hook; initialPrice is the reference sqrtPriceX96 retained for provenance, and the pinned Sepolia policy v5 (20 ETH opening fully diluted valuation) derives and overrides the effective opening price. Liquidity is seeded with the launch token only; no ETH funding, no constructor ETH, no mainnet transactions. Supply splits, allocations, treasury, contributor rewards and unlock come from policy v5 and the control plane, not from this manifest or the contracts. Runtime of both contracts contains no DELEGATECALL, CALLCODE or SELFDESTRUCT and is within the EIP-170 size bound (test/FactoryCompatibility.t.sol). Custody assumptions and limits, including that direct token donations to the bank are unrecoverable surplus, are documented in README.md and docs/DEPLOYMENT.md."
+}
