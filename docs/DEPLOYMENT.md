@@ -57,3 +57,9 @@ Review should specifically confirm the deployment uses the supplied non-rebasing
 token. The bank cannot enforce the semantics of an arbitrary contract passed as its token.
 Direct token donations remain surplus with no rescue mechanism. The fuzz equality invariant
 therefore models only bank deposits/withdrawals, while the donation unit test covers surplus.
+
+## After deployment
+
+The launch has since been deployed on Sepolia (block 11761675). The observed addresses and
+how to use them are in [SEPOLIA-GUIDE.md](SEPOLIA-GUIDE.md). The text above is the
+pre-deployment handoff and has been left as it was.

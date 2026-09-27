@@ -5,6 +5,7 @@ The JSON files [TimeLockToken.json](abi/TimeLockToken.json) and
 with `python3 scripts/export-abi.py`. Run it with `--check` to compare them against the current
 build. They include constructors, function mutability, indexed events, tuple components, and
 custom errors. No deployment address or service handoff hash is fabricated in this source stage.
+The live Sepolia addresses and error selectors are in [SEPOLIA-GUIDE.md](SEPOLIA-GUIDE.md).
 
 ## TimeLockToken
 

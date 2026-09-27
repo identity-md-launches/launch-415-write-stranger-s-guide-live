@@ -4,6 +4,39 @@ Time Lock is a Sepolia test-launch ERC-20 and an adminless token time lock. User
 deposit it until a future timestamp, and withdraw the full deposit when that timestamp is reached.
 There is no interest, fee, early exit, administrator, pause, rescue, proxy, or upgrade mechanism.
 
+> **Status.** Deployed on the **Sepolia test network only** (launch 113). LOCK and Sepolia ETH
+> have no monetary value. The contracts pass their own tests but have had no independent audit.
+> Do not use them for real funds. Nothing is mocked in `src/`. The only mock is a test token in
+> `test/mocks/`. Deposits have no recovery path if you lose your key (see
+> [custody assumptions](#custody-assumptions-and-limits)).
+
+## Live deployment (Sepolia, chain 11155111)
+
+Deployed by the IdentityMD launch factory in transaction
+[`0xb504e6cf…7383b2`](https://sepolia.etherscan.io/tx/0xb504e6cfa47c92ac913bdbbf172680fc2ab5df38865fe94e183bfc1b827383b2)
+at block 11761675. Values were checked on-chain on 2026-09-27.
+
+| Contract | Address |
+| --- | --- |
+| TimeLockToken (LOCK) | [`0x1befeab42d891b69441405a676de77565619e084`](https://sepolia.etherscan.io/address/0x1befeab42d891b69441405a676de77565619e084) |
+| TimeLockBank | [`0x4e0aa49ef9691c8f929daf94562681ac79108a39`](https://sepolia.etherscan.io/address/0x4e0aa49ef9691c8f929daf94562681ac79108a39) |
+| Reward MerkleDistributor (the factory's; **not part of this repository**) | [`0x8db9c22d47cbfe099aa5a0d91c7e6ca7e2a7c30a`](https://sepolia.etherscan.io/address/0x8db9c22d47cbfe099aa5a0d91c7e6ca7e2a7c30a) |
+
+LOCK trades against Sepolia ETH in a hookless Uniswap v4 pool (fee 3000, tick spacing 60) on
+PoolManager `0xE03A1074c86CFeDd5C142C4F04F1a1536e203543`. There is no faucet. On 2026-09-27
+nobody had used the bank yet: `totalLocked()` was 0 and `nextLockId()` was 1.
+
+You can check the deployment from a fresh clone with Foundry and any Sepolia RPC URL:
+
+```sh
+cast call 0x4e0aa49ef9691c8f929daf94562681ac79108a39 "maxLockSeconds()(uint256)" --rpc-url "$SEPOLIA_RPC_URL"
+```
+
+**[docs/SEPOLIA-GUIDE.md](docs/SEPOLIA-GUIDE.md)** covers the rest: how to get test LOCK, a
+`cast` walk-through using a keystore account (approve, deposit, lock, locksOf, extend,
+withdraw, with the exact error each one gives when misused), reading events, and the trust
+assumptions.
+
 ## Build and test offline
 
 Prerequisites: Foundry and Solidity **0.8.26** installed in Foundry's compiler cache. Development
